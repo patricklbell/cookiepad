@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@tailwind base;
+@layer base{
+ ul {
+  @apply list-disc;
+  @apply px-10;
+  @apply py-4;
+ }
+ ol {
+  @apply list-decimal;
+  @apply px-10;
+  @apply py-4;
+ }
+}

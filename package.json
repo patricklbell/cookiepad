@@ -1,0 +1,38 @@
+{
+	"name": "cookiepad",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"package": "svelte-kit package",
+		"preview": "vite preview",
+		"test": "playwright test"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.25.0",
+		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/kit": "next",
+		"@tailwindcss/typography": "^0.5.4",
+		"autoprefixer": "^10.4.8",
+		"postcss": "^8.4.16",
+		"svelte": "^3.46.0",
+		"svelte-preprocess": "^4.10.7",
+		"tailwindcss": "^3.1.8",
+		"vite": "^3.0.8"
+	},
+	"type": "module",
+	"dependencies": {
+		"@fontsource/fira-mono": "^4.5.0",
+		"@sveltejs/adapter-node": "^1.0.0-next.87",
+		"@sveltejs/adapter-static": "^1.0.0-next.39",
+		"@tiptap/core": "^2.0.0-beta.182",
+		"@tiptap/extension-bullet-list": "^2.0.0-beta.29",
+		"@tiptap/extension-gapcursor": "^2.0.0-beta.39",
+		"@tiptap/extension-list-item": "^2.0.0-beta.23",
+		"@tiptap/extension-underline": "^2.0.0-beta.25",
+		"@tiptap/starter-kit": "^2.0.0-beta.191",
+		"cookie": "^0.4.1",
+		"eslint": "^8.22.0",
+		"svelte-local-storage-store": "^0.3.1"
+	}
+}

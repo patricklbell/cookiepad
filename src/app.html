@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<script>
+			// select the favicon
+			const faviconEl = document.querySelector('link[rel="icon"]')
+
+			// watch for changes
+			const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+			mediaQuery.addEventListener('change', themeChange)
+
+			// listener
+			function themeChange(event) {
+				if (event.matches) {
+					faviconEl.setAttribute('href', '%sveltekit.assets%/favicon-dark.png')
+					console.log("dark");
+				} else {
+					faviconEl.setAttribute('href', '%sveltekit.assets%/favicon-light.png')
+					console.log("light");
+				}
+			}
+		</script>
+		%sveltekit.head%
+	</head>
+	<body>
+		<div>%sveltekit.body%</div>
+	</body>
+</html>
