@@ -1,9 +1,9 @@
 <script>
-	import Tiptap from '$lib/Tiptap.svelte'
+	import Editor from '$lib/Editor.svelte'
 
-	let tiptap;
+	let editor;
 	function handleMousemove() {
-		tiptap.editor.commands.focus();
+		editor.commands.focus();
 	}
 </script>
 
@@ -15,6 +15,6 @@
 </svelte:head>
 <section>
     <div class="text-3xl xl:mx-[30%] lg:mx-90 md:mx-100 mx-40 sm:mx-20 mb-24 m-0 h-auto">
-		<Tiptap bind:this={tiptap} />
+		<Editor bind:editor={editor} />
 	</div>
 </section>

@@ -16,6 +16,7 @@
     import OrderedList from '@tiptap/extension-ordered-list'
     import ListItem from '@tiptap/extension-list-item'
     import History from '@tiptap/extension-history'
+    import Typography from '@tiptap/extension-typography'
 
     let show_toolbar = false;
     let is_toolbar_hover = false;
@@ -27,7 +28,14 @@
     let element
     export let editor
 
+    import { writable } from 'svelte/store';
+    import Modal from 'svelte-simple-modal';
+    import Help from './Help.svelte';
+    export const modal = writable(null);
+    const showModal = () => modal.set(Help);
+
     onMount(() => {
+
         editor = new Editor({
             element: element,
             content: get(tiptap_json),
@@ -43,6 +51,7 @@
                 BulletList,
                 OrderedList,
                 History,
+                Typography,
             ],
             autofocus: true,
             editable: true,
@@ -69,17 +78,19 @@
 
     onDestroy(() => {
         if (editor) {
-        editor.destroy()
+            editor.destroy()
         }
     })
+
+
 </script>
 
 {#if editor}
-    <div on:mouseleave={()=>{is_toolbar_hover = false}} on:mouseenter={()=>{is_toolbar_hover = true}} 
+    <div on:mouseleave={()=>{is_toolbar_hover = false}} on:mouseenter={()=>{is_toolbar_hover = true}} on:blur={()=>{is_toolbar_hover = false}} 
         class="z-10 sticky top-0 grid place-items-center pb-20 pt-10">
     {#if show_toolbar || is_toolbar_hover}
         <div class="absolute rounded-md p-3 bg-slate-100 m-0 flex gap-3" in:fly="{{ y: -80, duration: 500 }}" out:fly="{{ y: -80, duration: 350 }}">
-            <Tooltip title="Ctrl-B">
+            <Tooltip title="Ctrl+B">
                 <button 
                     on:click={() => {editor.chain().focus().toggleBold().run()}}
                     class="bg-gray-300 {editor.isActive('bold') ? 'bg-gray-400': 'bg-gray-300'} py-2 px-4 rounded" 
@@ -88,7 +99,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 48 48" height='20' width='20'><path d="M14 36V8h11.4q3.3 0 5.725 2.1t2.425 5.3q0 1.9-1.05 3.5t-2.8 2.45v.3q2.15.7 3.475 2.5 1.325 1.8 1.325 4.05 0 3.4-2.625 5.6Q29.25 36 25.75 36Zm4.3-16.15h6.8q1.75 0 3.025-1.15t1.275-2.9q0-1.75-1.275-2.925Q26.85 11.7 25.1 11.7h-6.8Zm0 12.35h7.2q1.9 0 3.3-1.25t1.4-3.15q0-1.85-1.4-3.1t-3.3-1.25h-7.2Z"/></svg>
                 </button>
             </Tooltip>
-            <Tooltip title="Ctrl-I">
+            <Tooltip title="Ctrl+I">
                 <button 
                     on:click={() => {editor.chain().focus().toggleItalic().run()}}
                     class="bg-gray-300 {editor.isActive('italic') ? 'bg-gray-400': 'bg-gray-300'} py-2 px-4 rounded" 
@@ -97,7 +108,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 48 48" height='20' width='20'><path d="M10 40v-5h6.85l8.9-22H18V8h20v5h-6.85l-8.9 22H30v5Z"/></svg>
                 </button>
             </Tooltip>
-            <Tooltip title="Ctrl-U">
+            <Tooltip title="Ctrl+U">
                 <button 
                     on:click={() => {editor.chain().focus().toggleUnderline().run()}}
                     class="bg-gray-300 {editor.isActive('underline') ? 'bg-gray-400': 'bg-gray-300'} py-2 px-4 rounded" 
@@ -106,7 +117,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 48 48" height='20' width='20'><path d="M10 42v-3h28v3Zm14-8q-5.05 0-8.525-3.45Q12 27.1 12 22.1V6h4v16.2q0 3.3 2.3 5.55T24 30q3.4 0 5.7-2.25Q32 25.5 32 22.2V6h4v16.1q0 5-3.475 8.45Q29.05 34 24 34Z"/></svg>
                 </button>
             </Tooltip>
-            <Tooltip title="Ctrl-Shift-X">
+            <Tooltip title="Ctrl+Shift+X">
                 <button 
                     on:click={() => {editor.chain().focus().toggleStrike().run()}}
                     class="bg-gray-300 {editor.isActive('strike') ? 'bg-gray-400': 'bg-gray-300'} py-2 px-4 rounded" 
@@ -115,7 +126,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 48 48" height='20' width='20'><path d="M25.2 40q-3.9 0-7.1-2.075-3.2-2.075-4.65-5.575l3.45-1.45q1 2.4 3.25 3.85 2.25 1.45 5.05 1.45 2.6 0 4.15-1.35 1.55-1.35 1.55-3.65 0-1.15-.475-2.425T29.1 26.5h4.2q.7 1.15 1.05 2.3.35 1.15.35 2.4 0 3.9-2.65 6.35Q29.4 40 25.2 40ZM4 23.5v-3h40v3ZM23.7 7.7q3.3 0 5.85 1.55t3.75 4.3l-3.45 1.55q-.7-1.7-2.325-2.65-1.625-.95-3.825-.95-2.45 0-3.95 1.2t-1.5 3.3q0 .4.05.75t.15.75h-3.7q-.1-.4-.15-.8-.05-.4-.05-.8 0-3.65 2.55-5.925T23.7 7.7Z"/></svg>
                 </button>
             </Tooltip>
-            <Tooltip title="Ctrl-Shift-8">
+            <Tooltip title="Ctrl+Shift+8">
                 <button 
                     on:click={() => {editor.chain().focus().toggleBulletList().run()}}
                     class="bg-gray-300 {editor.isActive('bulletList') ? 'bg-gray-400': 'bg-gray-300'} py-2 px-4 rounded" 
@@ -124,7 +135,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 48 48" height='20' width='20'><path d="M8.55 39q-1.05 0-1.8-.725T6 36.55q0-1.05.75-1.8t1.8-.75q1 0 1.725.75.725.75.725 1.8 0 1-.725 1.725Q9.55 39 8.55 39ZM16 38v-3h26v3ZM8.55 26.5q-1.05 0-1.8-.725T6 24q0-1.05.75-1.775.75-.725 1.8-.725 1 0 1.725.75Q11 23 11 24t-.725 1.75q-.725.75-1.725.75Zm7.45-1v-3h26v3ZM8.5 14q-1.05 0-1.775-.725Q6 12.55 6 11.5q0-1.05.725-1.775Q7.45 9 8.5 9q1.05 0 1.775.725Q11 10.45 11 11.5q0 1.05-.725 1.775Q9.55 14 8.5 14Zm7.5-1v-3h26v3Z"/></svg>
                 </button>
             </Tooltip>
-            <Tooltip title="Ctrl-Shift-7">
+            <Tooltip title="Ctrl+Shift+7">
                 <button 
                     on:click={() => {editor.chain().focus().toggleOrderedList().run()}}
                     class="bg-gray-300 {editor.isActive('orderedList') ? 'bg-gray-400': 'bg-gray-300'} py-2 px-4 rounded" 
@@ -133,9 +144,25 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 48 48" height='20' width='20'><path d="M6 40v-1.7h4.2V37H8.1v-1.7h2.1V34H6v-1.7h5.9V40Zm10.45-2.45v-3H42v3ZM6 27.85v-1.6l3.75-4.4H6v-1.7h5.9v1.6l-3.8 4.4h3.8v1.7Zm10.45-2.45v-3H42v3ZM8.1 15.8V9.7H6V8h3.8v7.8Zm8.35-2.55v-3H42v3Z"/></svg>
                 </button>
             </Tooltip>
+            <Tooltip title="Help">
+                <button 
+                    on:click={showModal}
+                    class="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded" 
+                >
+                    <!-- https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/help/default/48px.svg -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 48 48" height='20' width='20'><path d="M24.2 35.65q.8 0 1.35-.55t.55-1.35q0-.8-.55-1.35t-1.35-.55q-.8 0-1.35.55t-.55 1.35q0 .8.55 1.35t1.35.55Zm-1.75-7.3h2.95q0-1.3.325-2.375T27.75 23.5q1.55-1.3 2.2-2.55.65-1.25.65-2.75 0-2.65-1.725-4.25t-4.575-1.6q-2.45 0-4.325 1.225T17.25 16.95l2.65 1q.55-1.4 1.65-2.175 1.1-.775 2.6-.775 1.7 0 2.75.925t1.05 2.375q0 1.1-.65 2.075-.65.975-1.9 2.025-1.5 1.3-2.225 2.575-.725 1.275-.725 3.375ZM24 44q-4.1 0-7.75-1.575-3.65-1.575-6.375-4.3-2.725-2.725-4.3-6.375Q4 28.1 4 24q0-4.15 1.575-7.8 1.575-3.65 4.3-6.35 2.725-2.7 6.375-4.275Q19.9 4 24 4q4.15 0 7.8 1.575 3.65 1.575 6.35 4.275 2.7 2.7 4.275 6.35Q44 19.85 44 24q0 4.1-1.575 7.75-1.575 3.65-4.275 6.375t-6.35 4.3Q28.15 44 24 44Zm0-3q7.1 0 12.05-4.975Q41 31.05 41 24q0-7.1-4.95-12.05Q31.1 7 24 7q-7.05 0-12.025 4.95Q7 16.9 7 24q0 7.05 4.975 12.025Q16.95 41 24 41Zm0-17Z"/></svg>
+                </button>
+            </Tooltip>
         </div>
     {/if}
     </div>
+    <Modal show={$modal} closeButton={false}
+        unstyled={true}
+        classBg="z-10 fixed top-0 left-0 w-screen h-screen flex flex-col justify-center bg-gray-300/[.9]"
+        classWindowWrap="relative m-2 max-h-full"
+        classWindow="rounded-lg relative xl:mx-[30%] lg:mx-90 md:mx-90 mx-50 max-w-full max-h-full my-2 mx-auto text-black rounded shadow-md bg-white"
+        classContent="relative p-2 overflow-auto"
+        on:close={()=>{editor.setEditable(true)}} on:open={()=>{editor.setEditable(false)}} />
     <style>
         .ProseMirror:focus {
             outline:none;
@@ -152,5 +179,3 @@
 {/if}
 
 <div bind:this={element}/>
-
-
