@@ -35,7 +35,6 @@
     const showModal = () => modal.set(Help);
 
     onMount(() => {
-
         editor = new Editor({
             element: element,
             content: get(tiptap_json),
